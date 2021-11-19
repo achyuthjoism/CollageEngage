@@ -9,12 +9,16 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import Color from './assets/Color';
+import {Color} from './assets/Color';
 import auth from '@react-native-firebase/auth';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Screens as screen, StackParams} from './screens';
 
-export default function WelcomeScreen() {
+type Props = NativeStackScreenProps<StackParams, screen.homeScreen>;
+
+export default function WelcomeScreen({navigation}: Props) {
   const {width, height} = Dimensions.get('screen');
-  const color = new Color();
+  const color = Color;
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -100,7 +104,9 @@ export default function WelcomeScreen() {
             />
             <Text style={styles.buttonText}>Continue With Google</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => navigation.navigate(screen.emailAuthScreen)}>
             <Image
               source={require('./assets/email.png')}
               style={styles.loginButtonImage}

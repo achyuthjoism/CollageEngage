@@ -1,4 +1,4 @@
-export default class Color {
-  primaryColor = '#9105F0';
-  primaryDark = '#271047';
+export enum Color {
+  primaryColor = '#9105F0',
+  primaryDark = '#271047',
 }
