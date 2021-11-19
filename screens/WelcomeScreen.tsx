@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from './assets/Color';
+import auth from '@react-native-firebase/auth';
 
 export default function WelcomeScreen() {
   const {width, height} = Dimensions.get('screen');
@@ -22,7 +23,7 @@ export default function WelcomeScreen() {
       position: 'absolute',
       width: '100%',
       height: '100%',
-      backgroundColor: 888,
+      backgroundColor: '#00000050',
     },
     logo: {
       width: (width * 1) / 4,
@@ -80,6 +81,7 @@ export default function WelcomeScreen() {
       color: '#fff',
     },
   });
+
   return (
     <ImageBackground
       source={require('./assets/welcome_screen.jpeg')}
