@@ -7,6 +7,7 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import HomeScreen from './screens/HomeScreen';
 import EmailAuthModal from './screens/auth/EmailAuthModal';
 import {Screens} from './screens/screens';
+import NewUserPage from './screens/auth/NewUserPage';
 
 export default function () {
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,13 +24,108 @@ export default function () {
     });
   }, []);
   const Stack = createNativeStackNavigator();
+  const AuthStack = () => {
+    if (user === null) {
+      return (
+        <>
+          <Stack.Screen
+            name={screens.homeScreen}
+            component={WelcomeScreen}
+            options={{headerShown: false}}
+          />
+        </>
+      );
+    } else if (user.displayName === null) {
+      return (
+        <>
+          <Stack.Screen
+            name={screens.newUserPage}
+            component={NewUserPage}
+            options={{animation: 'fade'}}
+          />
+          <>
+            <Stack.Screen
+              name={screens.homeScreen}
+              component={HomeScreen}
+              options={{animation: 'fade'}}
+            />
+          </>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Stack.Screen
+            name={screens.homeScreen}
+            component={HomeScreen}
+            options={{animation: 'fade'}}
+          />
+        </>
+      );
+    }
+  };
   if (loading) {
     return <Loading />;
   }
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {user ? (
+        {user == null ? (
+          <>
+            <Stack.Screen
+              name={screens.welcomeScreen}
+              component={WelcomeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name={screens.newUserPage}
+              component={NewUserPage}
+              options={{animation: 'fade'}}
+            />
+            <Stack.Screen
+              name={screens.homeScreen}
+              component={HomeScreen}
+              options={{animation: 'fade'}}
+            />
+          </>
+        ) : user.displayName === null ? (
+          <>
+            <Stack.Screen
+              name={screens.newUserPage}
+              component={NewUserPage}
+              options={{animation: 'fade'}}
+            />
+            <Stack.Screen
+              name={screens.homeScreen}
+              component={HomeScreen}
+              options={{animation: 'fade'}}
+            />
+            <Stack.Screen
+              name={screens.welcomeScreen}
+              component={WelcomeScreen}
+              options={{headerShown: false}}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name={screens.homeScreen}
+              component={HomeScreen}
+              options={{animation: 'fade'}}
+            />
+            <Stack.Screen
+              name={screens.welcomeScreen}
+              component={WelcomeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name={screens.newUserPage}
+              component={NewUserPage}
+              options={{animation: 'fade'}}
+            />
+          </>
+        )}
+        {/* {user ? (
           <>
             <Stack.Screen
               name={screens.homeScreen}
@@ -45,7 +141,7 @@ export default function () {
               options={{headerShown: false}}
             />
           </>
-        )}
+        )} */}
         <Stack.Screen
           name={screens.emailAuthScreen}
           component={EmailAuthModal}

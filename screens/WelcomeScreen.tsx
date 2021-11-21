@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,14 +9,26 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {Color} from './assets/Color';
+import {Color, mediumFont} from './assets/Color';
 import auth from '@react-native-firebase/auth';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Screens as screen, StackParams} from './screens';
+import {regularFont} from './assets/Color';
 
 type Props = NativeStackScreenProps<StackParams, screen.homeScreen>;
 
 export default function WelcomeScreen({navigation}: Props) {
+  useEffect(() => {
+    auth().onAuthStateChanged(userState => {
+      if (userState) {
+        if (userState?.displayName === null) {
+          navigation.replace(screen.newUserPage);
+        } else {
+          navigation.replace(screen.homeScreen);
+        }
+      }
+    });
+  });
   const {width, height} = Dimensions.get('screen');
   const color = Color;
   const styles = StyleSheet.create({
@@ -45,6 +57,7 @@ export default function WelcomeScreen({navigation}: Props) {
       backgroundColor: '#ffffff90',
     },
     welcomeText: {
+      ...mediumFont,
       fontSize: 25,
       color: 'black',
       marginTop: (width * 1) / 20,
@@ -81,6 +94,7 @@ export default function WelcomeScreen({navigation}: Props) {
       marginRight: 25,
     },
     buttonText: {
+      ...regularFont,
       fontSize: 20,
       color: '#fff',
     },
